@@ -1,0 +1,20 @@
+Default: &defaults
+  database: gitcab.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Test:
+  database: gitcab_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: gitcab_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: gitcab_production.sqlite3
+  poolsize: 100
+  <<: *defaults
