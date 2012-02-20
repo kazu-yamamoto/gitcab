@@ -1,11 +1,12 @@
 {-# LANGUAGE PackageImports #-}
 import "gitcab" Application (getApplicationDev)
 import Network.Wai.Handler.Warp
-    (runSettings, defaultSettings, settingsPort)
+    (runSettings, defaultSettings, settingsPort, settingsHost, HostPreference(..))
 import Control.Concurrent (forkIO)
 import System.Directory (doesFileExist, removeFile)
 import System.Exit (exitSuccess)
 import Control.Concurrent (threadDelay)
+import Prelude
 
 main :: IO ()
 main = do
@@ -13,6 +14,7 @@ main = do
     (port, app) <- getApplicationDev
     forkIO $ runSettings defaultSettings
         { settingsPort = port
+        , settingsHost = Host "127.0.0.1"
         } app
     loop
 

@@ -7,6 +7,8 @@
     <head>
         <meta charset="UTF-8">
 
+        <link rel="shortcut icon" href="http://localhost/app/gitcab/favicon.ico" type="image/vnd.microsoft.icon" />
+        <link rel="icon" href="http://localhost/app/gitcab/favicon.ico" type="image/vnd.microsoft.icon" />
         <title>#{pageTitle pc}
         <meta name="description" content="">
         <meta name="author" content="">

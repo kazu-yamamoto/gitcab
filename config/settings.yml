@@ -1,7 +1,7 @@
 Default: &defaults
-  host: "localhost"
-  port: 3000
-  copyright: Insert copyright statement here
+  host: "127.0.0.1"
+  port: 3001
+  copyright: Copyright (C) 2011 Kazu Yamamoto
   #analytics: UA-YOURCODE
 
 Development:
@@ -14,5 +14,5 @@ Staging:
   <<: *defaults
 
 Production:
-  approot: "http://www.example.com"
+  approot: "http://localhost/app/gitcab"
   <<: *defaults
