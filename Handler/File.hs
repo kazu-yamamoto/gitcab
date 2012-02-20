@@ -16,7 +16,7 @@ type PathInfo = [Text]
 
 getFileR :: PathInfo -> Handler RepHtml
 getFileR pinfo = do
-    mobj <-liftIO $ G.gitPathToGitObject (T.unpack path)
+    mobj <-liftIO $ G.gitPathToGitObject ('/' : T.unpack path)
     case mobj of
         Left _              -> layout $ noSuchFile path
         Right (GoTree _ xs) -> layout $ showDir    path pinfo xs
@@ -29,7 +29,7 @@ getFileR pinfo = do
         toWidget defStyle
 
 pathInfoToPath :: PathInfo -> Path
-pathInfoToPath pinfo = '/' `T.cons` (T.intercalate "/" pinfo)
+pathInfoToPath pinfo = T.intercalate "/" pinfo
 
 ----------------------------------------------------------------
 

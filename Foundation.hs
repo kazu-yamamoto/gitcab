@@ -85,9 +85,7 @@ type Form x = Html -> MForm GitCab GitCab (FormResult x, Widget)
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
 instance Yesod GitCab where
---    approot = ApprootMaster $ appRoot . settings
---    approot = ApprootStatic "/app/gitcab"
-    approot = ApprootRelative
+    approot = ApprootMaster $ appRoot . settings
 
     -- Place the session key file in the config folder
     encryptKey _ = fmap Just $ getKey "config/client_session_key.aes"
