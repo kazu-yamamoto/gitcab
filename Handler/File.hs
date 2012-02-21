@@ -24,44 +24,13 @@ getFileR pinfo = do
         Right _             -> layout $ noSuchFile path
   where
     path = pathInfoToPath pinfo
-    layout ham = defaultLayout $ do
-        toWidget ham
-        toWidget defStyle
+    layout wham = defaultLayout $ defStyle >> wham
 
 pathInfoToPath :: PathInfo -> Path
 pathInfoToPath pinfo = T.intercalate "/" pinfo
 
-----------------------------------------------------------------
-
-showDir :: Path -> PathInfo -> [GitTreeEntry] -> HtmlUrl (Route GitCab)
-showDir path pinfo xs = [hamlet|
-<h1>#{path}
-<ul>
-    $forall fn <- xs
-      <li><a href=@{FileR $ prepend fn}>#{fileNameDir fn}
-|]
-  where
-    prepend fn = pinfo ++ [T.pack (G.fileName fn)]
-    fileNameDir obj
-      | fileType obj == Directory = T.pack (G.fileName obj) `T.append` "/"
-      | otherwise                 = T.pack (G.fileName obj)
-
-
-showFile :: Path -> ByteString -> HtmlUrl (Route GitCab)
-showFile path bs = [hamlet|
-<h1>#{path}
-<pre>#{BS.unpack bs}
-|]
-
-noSuchFile :: Path -> HtmlUrl (Route GitCab)
-noSuchFile path = [hamlet|
- #{path}: no such file or directory
-|]
-
-----------------------------------------------------------------
-
-defStyle :: CssUrl (Route GitCab)
-defStyle = [cassius|
+defStyle :: Widget
+defStyle = toWidget [cassius|
 h1
     font-size: medium
     padding-left: 10px
@@ -75,4 +44,31 @@ pre
 footer
     padding-left: 10px
 }
+|]
+
+----------------------------------------------------------------
+
+showDir :: Path -> PathInfo -> [GitTreeEntry] -> Widget
+showDir path pinfo xs = [whamlet|
+<h1>#{path}
+<ul>
+    $forall fn <- xs
+      <li><a href=@{FileR $ prepend fn}>#{fileNameDir fn}
+|]
+  where
+    prepend fn = pinfo ++ [T.pack (G.fileName fn)]
+    fileNameDir obj
+      | fileType obj == Directory = T.pack (G.fileName obj) `T.append` "/"
+      | otherwise                 = T.pack (G.fileName obj)
+
+
+showFile :: Path -> ByteString -> Widget
+showFile path bs = [whamlet|
+<h1>#{path}
+<pre>#{BS.unpack bs}
+|]
+
+noSuchFile :: Path -> Widget
+noSuchFile path = [whamlet|
+ #{path}: no such file or directory
 |]
