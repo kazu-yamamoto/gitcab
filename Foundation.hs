@@ -15,7 +15,6 @@ module Foundation
 import Prelude
 import Yesod
 import Yesod.Static
-import Settings.StaticFiles
 import Yesod.Auth
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail
@@ -33,7 +32,6 @@ import Database.Persist.GenericSql
 import Settings (widgetFile, Extra (..))
 import Model
 import Text.Jasmine (minifym)
-import Web.ClientSession (getKey)
 import Text.Hamlet (hamletFile)
 #if DEVELOPMENT
 import qualified Data.Text.Lazy.Encoding
@@ -85,9 +83,6 @@ type Form x = Html -> MForm GitCab GitCab (FormResult x, Widget)
 instance Yesod GitCab where
     approot = ApprootMaster $ appRoot . settings
 
-    -- Place the session key file in the config folder
-    encryptKey _ = fmap Just $ getKey "config/client_session_key.aes"
-
     defaultLayout widget = do
         master <- getYesod
         mmsg <- getMessage
@@ -120,9 +115,6 @@ instance Yesod GitCab where
     -- expiration dates to be set far in the future without worry of
     -- users receiving stale content.
     addStaticContent = addStaticContentExternal minifym base64md5 Settings.staticDir (StaticR . flip StaticRoute [])
-
-    -- Enable Javascript async loading
-    yepnopeJs _ = Just $ Right $ StaticR js_modernizr_js
 
 -- How to run database actions.
 instance YesodPersist GitCab where
